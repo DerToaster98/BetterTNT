@@ -26,7 +26,7 @@ public abstract class PrimedTNTMixin extends Entity {
 	}
 	
 	private void handleContactExplosive() {
-		if (!BetterTNTMod.CONFIG.contactExplosives.enabled.get()) {
+		if (!BetterTNTMod.CONFIG.contactExplosivesEnabled.get()) {
 			return;
 		}
 		
@@ -36,9 +36,9 @@ public abstract class PrimedTNTMixin extends Entity {
 		
 		final double v = this.getDeltaMovement().lengthSqr();
 		final double vOld = this.vLastTick;
-		this.isFlying = this.isFlying || (v > BetterTNTMod.CONFIG.contactExplosives.minImpulse.get());
+		this.isFlying = this.isFlying || (v > BetterTNTMod.CONFIG.minImpulse.get());
 		if(this.isFlying) {
-			if(v < (vOld / BetterTNTMod.CONFIG.contactExplosives.maxImpulse.get())) {
+			if(v < (vOld / BetterTNTMod.CONFIG.maxImpulse.get())) {
 				this.setNoGravity(true);
 				this.setDeltaMovement(Vec3.ZERO);
 				((PrimedTnt)((Object)this)).setFuse(0);

@@ -43,7 +43,7 @@ public abstract class ExplosionMixin {
 			cancellable = false
 	)
 	private void mixinFinalizeExplosion(boolean pSpawnParticles, CallbackInfo ci) {
-		if (!BetterTNTMod.CONFIG.durabilityOverride.enabled.get()) {
+		if (!BetterTNTMod.CONFIG.durabilityOverridesEnabled.get()) {
 			return;
 		}
 		

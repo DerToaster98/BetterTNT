@@ -1,5 +1,6 @@
 package de.dertoaster.bettertnt;
 
+import net.minecraftforge.fml.ModLoadingContext;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -29,8 +30,8 @@ public class BetterTNTMod {
 
 	public BetterTNTMod() {
 		//Register config
-		BetterTNTMod.CONFIG = ConfigHelper.register(ModConfig.Type.SERVER, BetterTNTConfig::new);
-		
+		BetterTNTMod.CONFIG = ConfigHelper.register(ModConfig.Type.COMMON, BetterTNTConfig::new);
+
 		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
 		// Register the commonSetup method for modloading

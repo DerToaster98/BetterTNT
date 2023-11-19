@@ -46,18 +46,18 @@ public class DurabilityOverrideUtil {
 	}
 	
 	private static Optional<Integer> getDurabilityFor(BlockState state) {
-		if (BetterTNTMod.CONFIG.durabilityOverride.blockDurabilities.get().isEmpty() && BetterTNTMod.CONFIG.durabilityOverride.blockTagDurabilities.get().isEmpty()) {
+		if (BetterTNTMod.CONFIG.blockDurabilities.get().isEmpty() && BetterTNTMod.CONFIG.blockTagDurabilities.get().isEmpty()) {
 			return Optional.empty();
 		}
 		Block block = state.getBlock();
 		ResourceLocation rs = ForgeRegistries.BLOCKS.getKey(block);
 		
 		Integer value = null;
-		value = BetterTNTMod.CONFIG.durabilityOverride.blockDurabilities.get().getOrDefault(rs, null);
-		if (value == null && !BetterTNTMod.CONFIG.durabilityOverride.blockTagDurabilities.get().isEmpty()) {
+		value = BetterTNTMod.CONFIG.blockDurabilities.get().getOrDefault(rs, null);
+		if (value == null && !BetterTNTMod.CONFIG.blockTagDurabilities.get().isEmpty()) {
 			// If multiple are set, use the highest
 			for (TagKey<? extends Block> tag : state.getTags().collect(Collectors.toList())) {
-				Integer valueTmp = BetterTNTMod.CONFIG.durabilityOverride.blockTagDurabilities.get().getOrDefault(tag.location(), null);
+				Integer valueTmp = BetterTNTMod.CONFIG.blockTagDurabilities.get().getOrDefault(tag.location(), null);
 				if (value == null) {
 					value = valueTmp;
 					continue;
