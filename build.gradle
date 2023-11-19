@@ -73,6 +73,9 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 dependencies {
     minecraft("net.minecraftforge:forge:${mcVersion}-${forgeVersion}")
 	annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
+	
+	// AzureLib
+	implementation fg.deobf("mod.azure.azurelib:azurelib-forge-${mcVersion}:${azurelib_version}")
 }
 
 mixin {

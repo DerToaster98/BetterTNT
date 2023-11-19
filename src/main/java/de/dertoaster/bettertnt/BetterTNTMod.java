@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
@@ -31,6 +32,10 @@ public class BetterTNTMod {
 
 		// Register the item to a creative tab
 		modEventBus.addListener(this::addCreative);
+	}
+	
+	public static final ResourceLocation prefix(final String path) {
+		return new ResourceLocation(Constants.MODID, path);
 	}
 
 	private void commonSetup(final FMLCommonSetupEvent event) {
