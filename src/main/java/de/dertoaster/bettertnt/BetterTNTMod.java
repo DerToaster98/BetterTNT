@@ -30,7 +30,7 @@ public class BetterTNTMod {
 
 	public BetterTNTMod() {
 		//Register config
-		BetterTNTMod.CONFIG = ConfigHelper.register(ModConfig.Type.COMMON, BetterTNTConfig::new);
+		BetterTNTMod.CONFIG = ConfigHelper.register(ModConfig.Type.SERVER, BetterTNTConfig::new);
 
 		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
