@@ -9,6 +9,7 @@ import org.spongepowered.asm.mixin.injection.At.Shift;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import de.dertoaster.bettertnt.BetterTNTMod;
 import de.dertoaster.bettertnt.DurabilityOverrideUtil;
 import de.dertoaster.bettertnt.init.BetterTNTTags;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -42,6 +43,10 @@ public abstract class ExplosionMixin {
 			cancellable = false
 	)
 	private void mixinFinalizeExplosion(boolean pSpawnParticles, CallbackInfo ci) {
+		if (!BetterTNTMod.CONFIG.durabilityOverride.enabled.get()) {
+			return;
+		}
+		
 		if (this.blockInteraction == BlockInteraction.KEEP) {
 			return;
 		}
