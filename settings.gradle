@@ -1,16 +1,18 @@
 pluginManagement {
     repositories {
         gradlePluginPortal()
-        maven { url = 'https://libs.azuredoom.com:4443/mods' }
-        maven { url = 'https://maven.minecraftforge.net/' }
-		maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
-		maven { url = 'https://maven.parchmentmc.org' }
-    }
-	resolutionStrategy {
-        eachPlugin {
-            if (requested.id.toString() == 'org.spongepowered.mixin') {
-                useModule("org.spongepowered:mixingradle:${requested.version}")
-            }
+
+        maven {
+            name = 'MinecraftForge'
+            url = 'https://maven.minecraftforge.net/'
+        }
+        maven {
+            name = 'Parchment MC'
+            url = 'https://maven.parchmentmc.org'
+        }
+        maven {
+            name = 'Spongepowered Mixin'
+            url = 'https://repo.spongepowered.org/maven'
         }
     }
 }
