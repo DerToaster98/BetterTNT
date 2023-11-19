@@ -19,7 +19,7 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 jarJar.enable()
 
 tasks.named('jarJar').configure {
-	archiveClassifier = ''
+	archiveClassifier = 'fat'
 }
 
 println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
@@ -40,8 +40,7 @@ minecraft {
             arg "-mixin.config=${modid}.mixins.json"
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-
-            jvmArgs "-XX:+AllowEnhancedClassRedefinition", "-XX:HotswapAgent=fatjar"
+			
             mods {
                 "${modid}" {
                     source sourceSets.main
@@ -89,24 +88,9 @@ repositories {
         url = "https://libs.azuredoom.com:4443/mods"
     }
 	
-    maven {
-        name = "Geckolib Maven"
-        url = "https://dl.cloudsmith.io/public/geckolib3/geckolib/maven"
-    }
-
 	maven {
         name = "CubicInterpolation Maven"
         url = "https://cubicinterpolation.net/maven/"
-    }
-
-    maven {
-        name = "BlameJared maven"
-        url = "https://maven.blamejared.com/"
-    }
-
-    maven {
-        name = "RyanLiptak Maven"
-        url = "https://maven.ryanliptak.com/"
     }
 }
 
@@ -124,19 +108,9 @@ dependencies {
     implementation fg.deobf("mod.azure.azurelib:azurelib-forge-${azurelib_version}")
 }
 
-createMcpToSrg {
-    outputs.upToDateWhen {false}
-
-    doLast {
-        fixFG5TsrgForMixinAP(output.get().asFile, file("${buildDir}/fixMcpToSrg/output.tsrg"))
-    }
-}
-
 mixin {
     add sourceSets.main, "${modid}.refmap.json"
     config "${modid}.mixins.json"
-
-    reobfSrgFile = file("${buildDir}/fixMcpToSrg/output.tsrg")
 
     debug.verbose = true
     debug.export = true
@@ -162,7 +136,6 @@ tasks.named('processResources', ProcessResources).configure {
 }
 
 tasks.named('jar', Jar).configure {
-	archiveClassifier = 'slim'
     manifest {
         attributes([
                 'Specification-Title'     : mod_name,
@@ -177,50 +150,6 @@ tasks.named('jar', Jar).configure {
     }
 }
 
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            artifact jar
-        }
-    }
-    repositories {
-        maven {
-            url "file://${project.projectDir}/mcmodsrepo"
-        }
-    }
-}
-
 tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8'
-}
-
-// Function that actually fixes the TSRG file
-static def fixFG5TsrgForMixinAP(File inFile, File outFile) {
-    // Make directory if needed
-    outFile.parentFile.mkdirs()
-
-    try (Scanner scanner = new Scanner(inFile); PrintWriter out = new PrintWriter(outFile)) {
-        boolean firstLine = true
-
-        while (scanner.hasNextLine()) {
-            String next = scanner.nextLine()
-
-            // Skip first 'tsrg left right' header line
-            if (firstLine) {
-                firstLine = false
-                continue
-            }
-
-            // Skip 'static' indicators
-            if (next.trim() == "static") continue
-
-            // Export line otherwise
-            out.println(next)
-        }
-    }
-}
-
-// Delete slim jar
-build.doLast {
-	delete "${project.projectDir}/build/libs/${modid}-${mc_version}-${mod_version}-slim.jar"
+    options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
 }
