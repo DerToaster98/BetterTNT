@@ -3,7 +3,10 @@ package de.dertoaster.bettertnt.config;
 import com.mojang.serialization.Codec;
 import commoble.databuddy.config.ConfigHelper;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Map;
 
@@ -35,11 +38,20 @@ public class BetterTNTConfig {
 				.comment("Enable or disable durability overrides")
 				.define("enabled", true);
 		builder.comment("Overrides per block");
-		blockDurabilities = ConfigHelper.defineObject(builder, "blockDurabilities", Codec.unboundedMap(ResourceLocation.CODEC, Codec.INT), Map.of(new ResourceLocation("example", "exampleblock"), 42));
+		blockDurabilities = ConfigHelper.defineObject(builder, "blockDurabilities", Codec.unboundedMap(ResourceLocation.CODEC, Codec.INT), Map.of(
+				new ResourceLocation("example", "exampleblock"), 42,
+				ForgeRegistries.BLOCKS.getKey(Blocks.END_STONE), 80,
+				ForgeRegistries.BLOCKS.getKey(Blocks.END_STONE_BRICKS), 80,
+				ForgeRegistries.BLOCKS.getKey(Blocks.END_STONE_BRICK_SLAB), 80,
+				ForgeRegistries.BLOCKS.getKey(Blocks.END_STONE_BRICK_STAIRS), 80,
+				ForgeRegistries.BLOCKS.getKey(Blocks.END_STONE_BRICK_WALL), 80
+		));
 
 		builder.comment("Override per block-tag (fallbacks)");
 		builder.comment("If multiple tags are set for one block, it will use the highest value in those tags");
-		blockTagDurabilities = ConfigHelper.defineObject(builder, "blockTagDurabilities", Codec.unboundedMap(ResourceLocation.CODEC, Codec.INT), Map.of(new ResourceLocation("example", "exampleblock"), 42));
+		blockTagDurabilities = ConfigHelper.defineObject(builder, "blockTagDurabilities", Codec.unboundedMap(ResourceLocation.CODEC, Codec.INT), Map.of(
+				new ResourceLocation("example", "exampleblock"), 42
+		));
 
 		builder.pop();
 	}

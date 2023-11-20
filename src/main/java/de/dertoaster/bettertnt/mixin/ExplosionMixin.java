@@ -59,8 +59,7 @@ public abstract class ExplosionMixin {
 			if (DurabilityOverrideUtil.isNextToAir(pos, this.level)) {
 				return true;
 			}
-			
-			return false;
+			return DurabilityOverrideUtil.rollDurabilityOverride(this.level.getBlockState(pos), pos);
 		});
 	}
 	

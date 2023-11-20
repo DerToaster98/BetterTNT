@@ -2,6 +2,7 @@ package de.dertoaster.bettertnt;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import de.dertoaster.bettertnt.config.BetterTNTConfig;
 import de.dertoaster.bettertnt.init.BetterTNTTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -25,7 +26,7 @@ public class DurabilityOverrideUtil {
 	}
 	
 	private static boolean checkPosForAirLikeBlock(BlockPos pos, Level level) {
-		if (level.getBlockState(pos.above()).isAir()) {
+		if (level.getBlockState(pos).isAir()) {
 			return true;
 		}
 		return level.getBlockState(pos).is(BetterTNTTags.Blocks.AIR);
@@ -34,6 +35,12 @@ public class DurabilityOverrideUtil {
 	private static RandomSource RANDOM = RandomSource.create();
 	
 	public static boolean rollDurabilityOverride(BlockState state, BlockPos pos) {
+		if (!BetterTNTMod.CONFIG.durabilityOverridesEnabled.get()) {
+			return false;
+		}
+		if (BetterTNTMod.CONFIG.blockDurabilities.get().isEmpty() && BetterTNTMod.CONFIG.blockTagDurabilities.get().isEmpty()) {
+			return false;
+		}
 		Optional<Integer> durability = getDurabilityFor(state);
 		if (durability.isEmpty()) {
 			return false;
@@ -42,13 +49,10 @@ public class DurabilityOverrideUtil {
 		long seed = (pos.getX() * pos.getY() * pos.getZ()) + (System.currentTimeMillis() >> 12);
 		RANDOM.setSeed(seed);
 		
-		return RANDOM.nextInt(100) > Math.abs(durability.get());
+		return !(RANDOM.nextInt(100) > Math.abs(durability.get()));
 	}
 	
 	private static Optional<Integer> getDurabilityFor(BlockState state) {
-		if (BetterTNTMod.CONFIG.blockDurabilities.get().isEmpty() && BetterTNTMod.CONFIG.blockTagDurabilities.get().isEmpty()) {
-			return Optional.empty();
-		}
 		Block block = state.getBlock();
 		ResourceLocation rs = ForgeRegistries.BLOCKS.getKey(block);
 		
