@@ -33,7 +33,8 @@ public class DurabilityOverrideUtil {
 	}
 	
 	private static RandomSource RANDOM = RandomSource.create();
-	
+
+	// Returns wether or not a block can be destroyed based on their durability setting. If it is not configured return true
 	public static boolean rollDurabilityOverride(BlockState state, BlockPos pos) {
 		if (!BetterTNTMod.CONFIG.durabilityOverridesEnabled.get()) {
 			return false;

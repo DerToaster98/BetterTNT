@@ -56,7 +56,7 @@ public abstract class ExplosionMixin {
 		}
 		// Then we want to remove some blocks from the explosion
 		this.toBlow.removeIf(pos -> {
-			if (DurabilityOverrideUtil.isNextToAir(pos, this.level)) {
+			if (!DurabilityOverrideUtil.isNextToAir(pos, this.level)) {
 				return true;
 			}
 			return DurabilityOverrideUtil.rollDurabilityOverride(this.level.getBlockState(pos), pos);

@@ -6,6 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.common.data.ForgeBlockTagsProvider;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Map;
@@ -39,7 +40,6 @@ public class BetterTNTConfig {
 				.define("enabled", true);
 		builder.comment("Overrides per block");
 		blockDurabilities = ConfigHelper.defineObject(builder, "blockDurabilities", Codec.unboundedMap(ResourceLocation.CODEC, Codec.INT), Map.of(
-				new ResourceLocation("example", "exampleblock"), 42,
 				ForgeRegistries.BLOCKS.getKey(Blocks.END_STONE), 80,
 				ForgeRegistries.BLOCKS.getKey(Blocks.END_STONE_BRICKS), 80,
 				ForgeRegistries.BLOCKS.getKey(Blocks.END_STONE_BRICK_SLAB), 80,
@@ -50,7 +50,7 @@ public class BetterTNTConfig {
 		builder.comment("Override per block-tag (fallbacks)");
 		builder.comment("If multiple tags are set for one block, it will use the highest value in those tags");
 		blockTagDurabilities = ConfigHelper.defineObject(builder, "blockTagDurabilities", Codec.unboundedMap(ResourceLocation.CODEC, Codec.INT), Map.of(
-				new ResourceLocation("example", "exampleblock"), 42
+				new ResourceLocation("forge", "end_stones"), 80
 		));
 
 		builder.pop();
